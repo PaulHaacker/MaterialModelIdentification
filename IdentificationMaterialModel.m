@@ -59,7 +59,7 @@ weight_loss = 1;
 options = optimoptions("lsqnonlin","Algorithm","trust-region-reflective");
 par_norm_lsqnonlin = lsqnonlin(@(p)diffFcn(p,omega_data,storage_data,loss_data,weight_loss) ...
     ,par_norm0,lb,ub,A_ineq,b_ineq,Aeq,beq,...
-    @(p) nonlincon_identification(p),options);
+@(p) nonlincon_identification(p),options);
 
 
 % verify solution:
