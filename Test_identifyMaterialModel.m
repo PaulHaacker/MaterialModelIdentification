@@ -3,9 +3,6 @@
 clear
 close all
 
-% % load data
-% load('masterData20deg.mat')
-
 % generate "data" directly from the model to test the identification - this
 % is essentially just a copy of the test script of the model.
 alpha = 1/3;
@@ -19,7 +16,7 @@ par_test =   [alpha;
 par_norm_test = par2par_norm(par_test);
 
 omega_data = logspace(-5,5,100); % frequency range
-ComplexModulus_data = ComplexModulusFcn(par_norm_test,omega_data);
+ComplexModulus_data = ComplexModulusFcn_3parLinear(par_norm_test,omega_data);
 storage_data = real(ComplexModulus_data);
 loss_data = imag(ComplexModulus_data);
 
@@ -40,12 +37,6 @@ loss_data = addCustomNoise(loss_data,noise_lvl);
 lb = zeros(4,1);
 ub = [1 inf inf inf]';
 
-% no linear equality or inequality constraints
-A_ineq = [];
-b_ineq = [];
-Aeq = [];
-beq = [];
-
 % nonlinear inequality constraint is defined in "nonlincon_identification"
 
 % initial guess
@@ -56,12 +47,10 @@ par_norm0 = par2par_norm(par_0); % normalized parameters
 % is much smaller than storage data.
 weight_loss = 1;
 
-options = optimoptions("lsqnonlin","Algorithm","trust-region-reflective");
 par_norm_lsqnonlin = ...
-lsqnonlin(@(p)diffFcn(p,omega_data,storage_data,loss_data,weight_loss,) ...
-    ,par_norm0,lb,ub,A_ineq,b_ineq,Aeq,beq,...
-@(p) nonlincon_identification(p),options);
-
+    identifyMaterialModel(omega_data, storage_data, loss_data, ...
+    par_norm0, lb, ub, weight_loss,...
+    @(par,om)ComplexModulusFcn_3parLinear(par,om),@(p) nonlincon_3parLinear(p));
 
 % verify solution:
 disp(['True (normalized) parameters:'])
@@ -72,7 +61,7 @@ disp(num2str(par_norm_lsqnonlin'))
 disp(['norm of difference = ',num2str(norm(par_norm_lsqnonlin-par_norm_test))])
 
 % plotting
-ComplexModulus_model = ComplexModulusFcn(par_norm_lsqnonlin,omega_data);
+ComplexModulus_model = ComplexModulusFcn_3parLinear(par_norm_lsqnonlin,omega_data);
 storage_model = real(ComplexModulus_model);
 loss_model = imag(ComplexModulus_model);
 

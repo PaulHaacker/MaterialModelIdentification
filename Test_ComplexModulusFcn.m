@@ -26,7 +26,7 @@ par =   [alpha;
         p_1]; % parameters
 
 omega = logspace(-5,5,100); % frequency range
-ComplexModulus = ComplexModulusFcn(par2par_norm(par),omega);
+ComplexModulus = ComplexModulusFcn_3parLinear(par2par_norm(par),omega);
 
 % plot
 figure
