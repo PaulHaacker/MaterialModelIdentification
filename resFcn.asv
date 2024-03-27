@@ -1,0 +1,6 @@
+function res = resFcn(par_norm,omega,storage,loss)
+% residual of material model in frequency domain relative to data for
+% identification
+
+
+end
