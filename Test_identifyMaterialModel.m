@@ -1,5 +1,4 @@
-%% Identification of fractional material model from DMA (dynamic mechanical analysis),
-% experiments conducted by Ondrej Farkas and Alexander Lion (Uni-BW Munich)
+%% Identification of fractional material model from data
 clear
 close all
 
