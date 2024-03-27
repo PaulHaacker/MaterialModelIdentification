@@ -57,3 +57,33 @@ par_norm_lsqnonlin = lsqnonlin(@(p)diffFcn(p,omega_data,storage_data,loss_data,w
     @(p) nonlincon_identification(p),options);
 
 
+% verify solution:
+disp(['True (normalized) parameters:'])
+disp(num2str(par_norm_test'))
+disp(['Identified (normalized) parameters:'])
+disp(num2str(par_norm_lsqnonlin'))
+
+disp(['norm of difference = ',num2str(norm(par_norm_lsqnonlin-par_norm_test))])
+
+% plotting
+ComplexModulus_model = ComplexModulusFcn(par_norm_lsqnonlin,omega_data);
+storage_model = real(ComplexModulus_model);
+loss_model = imag(ComplexModulus_model);
+
+figure
+tiledlayout('flow')
+nexttile
+plot(omega_data,storage_data,'o-',omega_data,storage_model,'o-');
+set(gca,'xscale','log')
+grid on
+legend('data','model')
+ylabel('storage modulus $E"= \Re\{E^\ast\}$')
+xlabel('frequency in Hz')
+nexttile
+plot(omega_data,loss_data,'o-',omega_data,loss_model,'o-');
+set(gca,'xscale','log')
+grid on
+legend('data','model')
+ylabel('loss modulus $E""= \Im\{E^\ast\}$')
+xlabel('frequency in Hz')commit
+
