@@ -1,0 +1,11 @@
+*.png
+*.asv
+*.fig
+*.pdf
+*.eps
+*.afdesign
+*.pps
+*.tikz
+*.tex
+*.eps
+plots/
