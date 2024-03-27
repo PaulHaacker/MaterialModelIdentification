@@ -23,6 +23,11 @@ ComplexModulus_data = ComplexModulusFcn(par_norm_test,omega_data);
 storage_data = real(ComplexModulus_data);
 loss_data = imag(ComplexModulus_data);
 
+% add noise
+noise_lvl = 0.05;
+storage_data = addCustomNoise(storage_data,noise_lvl);
+loss_data = addCustomNoise(loss_data,noise_lvl);
+
 % parameters to be identified are the normalized parameters which are an
 % input to the model "ComplexModulusFcn" and live in R^4, namely
 % par_norm ...      (4-by-1)-array of normalized parameters, where 
@@ -85,5 +90,24 @@ set(gca,'xscale','log')
 grid on
 legend('data','model')
 ylabel('loss modulus $E""= \Im\{E^\ast\}$')
-xlabel('frequency in Hz')commit
+xlabel('frequency in Hz')
+
+
+function noisy_data = addCustomNoise(data, noise_levels)
+    % Calculate the standard deviation of the data
+    std_dev = std(data);
+
+    % Calculate the desired noise power
+    noise_power = (noise_levels * std_dev)^2;
+
+    % Generate random noise with the same length as the data
+    noise = randn(size(data));
+
+    % Scale the noise to have the desired power
+    scaled_noise = sqrt(noise_power) * noise;
+
+    % Add the scaled noise to the data
+    noisy_data = data + scaled_noise;
+end
+
 
