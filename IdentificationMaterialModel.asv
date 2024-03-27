@@ -23,6 +23,11 @@ ComplexModulus_data = ComplexModulusFcn(par_norm_test,omega_data);
 storage_data = real(ComplexModulus_data);
 loss_data = imag(ComplexModulus_data);
 
+% add noise
+noise_lvl = 0.05;
+storage_data = addCustomNoise(storage_data,noise_lvl);
+loss_data = addCustomNoise(loss_data,noise_lvl);
+
 % parameters to be identified are the normalized parameters which are an
 % input to the model "ComplexModulusFcn" and live in R^4, namely
 % par_norm ...      (4-by-1)-array of normalized parameters, where 
@@ -52,9 +57,10 @@ par_norm0 = par2par_norm(par_0); % normalized parameters
 weight_loss = 1;
 
 options = optimoptions("lsqnonlin","Algorithm","trust-region-reflective");
-par_norm_lsqnonlin = lsqnonlin(@(p)diffFcn(p,omega_data,storage_data,loss_data,weight_loss) ...
+par_norm_lsqnonlin = ...
+lsqnonlin(@(p)diffFcn(p,omega_data,storage_data,loss_data,weight_loss,) ...
     ,par_norm0,lb,ub,A_ineq,b_ineq,Aeq,beq,...
-    @(p) nonlincon_identification(p),options);
+@(p) nonlincon_identification(p),options);
 
 
 % verify solution:
@@ -66,17 +72,43 @@ disp(num2str(par_norm_lsqnonlin'))
 disp(['norm of difference = ',num2str(norm(par_norm_lsqnonlin-par_norm_test))])
 
 % plotting
-ComplexModulus_data = ComplexModulusFcn(par_norm_lsqnonlin,omega_data);
-storage_data = real(ComplexModulus_data);
-loss_data = imag(ComplexModulus_data);
+ComplexModulus_model = ComplexModulusFcn(par_norm_lsqnonlin,omega_data);
+storage_model = real(ComplexModulus_model);
+loss_model = imag(ComplexModulus_model);
 
 figure
 tiledlayout('flow')
 nexttile
-plot(omega_data,storage_data,'o-',omega_data,imag(ComplexModulus),'o-');
+plot(omega_data,storage_data,'o-',omega_data,storage_model,'o-');
 set(gca,'xscale','log')
 grid on
 legend('data','model')
 ylabel('storage modulus $E"= \Re\{E^\ast\}$')
 xlabel('frequency in Hz')
+nexttile
+plot(omega_data,loss_data,'o-',omega_data,loss_model,'o-');
+set(gca,'xscale','log')
+grid on
+legend('data','model')
+ylabel('loss modulus $E""= \Im\{E^\ast\}$')
+xlabel('frequency in Hz')
+
+
+function noisy_data = addCustomNoise(data, noise_levels)
+    % Calculate the standard deviation of the data
+    std_dev = std(data);
+
+    % Calculate the desired noise power
+    noise_power = (noise_levels * std_dev)^2;
+
+    % Generate random noise with the same length as the data
+    noise = randn(size(data));
+
+    % Scale the noise to have the desired power
+    scaled_noise = sqrt(noise_power) * noise;
+
+    % Add the scaled noise to the data
+    noisy_data = data + scaled_noise;
+end
+
 

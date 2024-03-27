@@ -1,4 +1,4 @@
-function ComplexModulus = ComplexModulusFcn(par_norm,omega)
+function ComplexModulus = ComplexModulusFcn_3parLinear(par_norm,omega)
 % Material Model of a Viscoelastic Material in the frequency domain
 % inputs:
 % par_norm ...      (4-by-1)-array of normalized parameters, where 

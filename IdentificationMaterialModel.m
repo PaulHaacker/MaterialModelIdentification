@@ -19,7 +19,7 @@ par_test =   [alpha;
 par_norm_test = par2par_norm(par_test);
 
 omega_data = logspace(-5,5,100); % frequency range
-ComplexModulus_data = ComplexModulusFcn(par_norm_test,omega_data);
+ComplexModulus_data = ComplexModulusFcn_3parLinear(par_norm_test,omega_data);
 storage_data = real(ComplexModulus_data);
 loss_data = imag(ComplexModulus_data);
 
@@ -57,7 +57,9 @@ par_norm0 = par2par_norm(par_0); % normalized parameters
 weight_loss = 1;
 
 options = optimoptions("lsqnonlin","Algorithm","trust-region-reflective");
-par_norm_lsqnonlin = lsqnonlin(@(p)diffFcn(p,omega_data,storage_data,loss_data,weight_loss) ...
+par_norm_lsqnonlin = ...
+lsqnonlin(@(p)diffFcn(p,omega_data,storage_data,loss_data,weight_loss,...
+@(par_norm,omega) ComplexModulusFcn_3parLinear(par_norm,omega)) ...
     ,par_norm0,lb,ub,A_ineq,b_ineq,Aeq,beq,...
 @(p) nonlincon_identification(p),options);
 
@@ -71,7 +73,7 @@ disp(num2str(par_norm_lsqnonlin'))
 disp(['norm of difference = ',num2str(norm(par_norm_lsqnonlin-par_norm_test))])
 
 % plotting
-ComplexModulus_model = ComplexModulusFcn(par_norm_lsqnonlin,omega_data);
+ComplexModulus_model = ComplexModulusFcn_3parLinear(par_norm_lsqnonlin,omega_data);
 storage_model = real(ComplexModulus_model);
 loss_model = imag(ComplexModulus_model);
 
