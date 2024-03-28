@@ -1,5 +1,5 @@
 function par_norm_lsqnonlin = identifyMaterialModel(omega_data, storage_data, loss_data, initial_guess, lb, ub, weight_loss, ComplexModulusFcn, nonlincon)
-% IDENTIFYPARAMETERS Identifies parameters of a material model using experimental data.
+% identifyMaterialModel Identifies parameters of a material model using experimental data.
 %
 %   par_norm_lsqnonlin = identifyParameters(omega_data, storage_data, loss_data, initial_guess, lb, ub, weight_loss, ComplexModulusFcn)
 %
@@ -19,7 +19,7 @@ function par_norm_lsqnonlin = identifyMaterialModel(omega_data, storage_data, lo
 %   par_norm_lsqnonlin   - Identified normalized parameters obtained through optimization.
 
     % Define options for lsqnonlin
-    options = optimoptions("lsqnonlin","Algorithm","trust-region-reflective");
+    options = optimoptions("lsqnonlin","Algorithm","trust-region-reflective",'Display','off');
 
     % Call lsqnonlin to optimize parameters
     par_norm_lsqnonlin = lsqnonlin(@(p) diffFcn(p, omega_data, storage_data, loss_data, weight_loss, ComplexModulusFcn), ...

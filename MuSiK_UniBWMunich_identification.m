@@ -87,7 +87,15 @@ sgtitle({'Identification of Material Model Parameters using lsqnonlin,';...
 
 set(gcf, 'WindowState', 'maximized');
 
-%% 
+%% identification and grid search over weights
+% usage: try out a lot of weights and see whether they converge, i.e.
+% compare all identified parameters to the 'last' one, the one using the
+% largest weight. This should confirm whether a large weight is good at
+% all. Possible Problems: When the weight is chosen astronomically large,
+% the identification probably wont give satisfactory results - one expects
+% a 'sweetspot'.
+
+
 
 
 function [sorted_a, sorted_b, sorted_c] = sortArrays(a, b, c)
