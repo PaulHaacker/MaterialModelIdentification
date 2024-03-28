@@ -27,15 +27,15 @@ par_0 = [alpha;E_0;E_1;p_1];
 par_norm0 = par2par_norm(par_0);
 
 % weight_loss_values = [1, 10, 100]; % Different weight values for loss modulus
-weight_loss_values = 1:5; % Different weight values for loss modulus
+weight_loss_values = []; % Different weight values for loss modulus
 
 figure;
 
 % Plot storage modulus
 subplot(2, 1, 1);
 hold on;
-for i = 1:length(weight_loss_values)
-    weight_loss = weight_loss_values(i);
+for ii = 1:length(weight_loss_values)
+    weight_loss = weight_loss_values(ii);
     
     par_norm_lsqnonlin = identifyMaterialModel(omega_data, storage_data, loss_data, par_norm0, lb, ub, weight_loss, @(par,om)ComplexModulusFcn_3parLinear(par,om), @(p) nonlincon_3parLinear(p));
     par_lsqnonlin = par_norm2par(par_norm_lsqnonlin);
@@ -57,8 +57,8 @@ legend('show', 'Location','northwest');
 % Plot loss modulus
 subplot(2, 1, 2);
 hold on;
-for i = 1:length(weight_loss_values)
-    weight_loss = weight_loss_values(i);
+for ii = 1:length(weight_loss_values)
+    weight_loss = weight_loss_values(ii);
     
     par_norm_lsqnonlin = identifyMaterialModel(omega_data, storage_data, loss_data, par_norm0, lb, ub, weight_loss, @(par,om)ComplexModulusFcn_3parLinear(par,om), @(p) nonlincon_3parLinear(p));
     par_lsqnonlin = par_norm2par(par_norm_lsqnonlin);
@@ -95,7 +95,37 @@ set(gcf, 'WindowState', 'maximized');
 % the identification probably wont give satisfactory results - one expects
 % a 'sweetspot'.
 
+lb = zeros(4,1);
+ub = [1 inf inf inf]';
 
+alpha = .2;
+E_0 = 2500;
+E_1 = 500;
+p_1 = 50;
+par_0 = [alpha;E_0;E_1;p_1];
+par_norm0 = par2par_norm(par_0);
+
+weight_loss_values = 0:.1:50; % Different weight values for loss modulus
+
+par_norm_lsqnonlin = zeros(length(par_norm0),length(weight_loss_values));
+
+for ii = 1:length(weight_loss_values)
+    weight_loss = weight_loss_values(ii);
+    
+    par_norm_lsqnonlin(:,ii) = identifyMaterialModel(omega_data, storage_data, loss_data, par_norm0, lb, ub, weight_loss, @(par,om)ComplexModulusFcn_3parLinear(par,om), @(p) nonlincon_3parLinear(p));
+end
+
+% Compute norm differences
+norm_diff_array = vecnorm(par_norm_lsqnonlin-par_norm_lsqnonlin(:,end),2,1);
+figure
+plot(weight_loss_values,log(norm_diff_array),'o-')
+
+set(gca, 'FontSize', 14)
+grid on
+ylabel('log of norm of difference of parameters')
+xlabel('loss weight $W_L$')
+
+set(gcf, 'WindowState', 'maximized');
 
 
 function [sorted_a, sorted_b, sorted_c] = sortArrays(a, b, c)
