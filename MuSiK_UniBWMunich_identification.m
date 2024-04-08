@@ -169,26 +169,26 @@ loss_model_whole = imag(ComplexModulus_model_whole);
 figure;
 subplot(2, 1, 1);
 hold on;
-plot(omega_data, storage_model_frac, 'o-', 'DisplayName', sprintf('fractional-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_frac)));
-plot(omega_data, storage_model_whole, 'o-', 'DisplayName', sprintf('whole-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_whole)));
+plot(omega_data, storage_model_frac, '-', 'DisplayName', sprintf('fractional-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_frac)));
+plot(omega_data, storage_model_whole, '-', 'DisplayName', sprintf('whole-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_whole)));
 plot(omega_data, storage_data, 'o-', 'DisplayName', 'Data');
 set(gca,'xscale','log')
 set(gca, 'FontSize', 14)
 grid on
-ylabel('Storage Modulus')
+ylabel('Storage Modulus in MPa')
 xlabel('Frequency in Hz')
 legend('show', 'Location','northwest');
 
 % Plot loss modulus
 subplot(2, 1, 2);
 hold on;
-plot(omega_data, loss_model_frac, 'o-', 'DisplayName', sprintf('fractional-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_frac)));
-plot(omega_data, loss_model_whole, 'o-', 'DisplayName', sprintf('whole-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_whole)));
+plot(omega_data, loss_model_frac, '-', 'DisplayName', sprintf('fractional-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_frac)));
+plot(omega_data, loss_model_whole, '-', 'DisplayName', sprintf('whole-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_whole)));
 plot(omega_data, loss_data, 'o-', 'DisplayName', 'Data');
 set(gca,'xscale','log')
 set(gca, 'FontSize', 14)
 grid on
-ylabel('Loss Modulus')
+ylabel('Loss Modulus in MPa')
 xlabel('Frequency in Hz')
 legend('show', 'Location','southwest');
 
