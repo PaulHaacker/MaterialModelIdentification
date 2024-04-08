@@ -6,11 +6,17 @@
 clear
 close all
 
+% % read data
+% load('masterSemiSimpleData20deg.mat')
+% omega_data = masterData20deg.freq;
+% storage_data = masterData20deg.storage;
+% loss_data = masterData20deg.loss;
+
 % read data
-load('masterData20deg.mat')
-omega_data = masterData20deg.freq;
-storage_data = masterData20deg.storage;
-loss_data = masterData20deg.loss;
+load('masterSimpleData20deg.mat')
+omega_data = masterSimpleData20deg.freq;
+storage_data = masterSimpleData20deg.storage;
+loss_data = masterSimpleData20deg.loss;
 
 [omega_data, storage_data, loss_data] = sortArrays(omega_data, storage_data, loss_data);
 
