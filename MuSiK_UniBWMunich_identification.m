@@ -44,7 +44,7 @@ for ii = 1:length(weight_loss_values)
     storage_model = real(ComplexModulus_model);
 
     % Plot storage modulus
-    plot(omega_data, storage_model, 'o-', 'DisplayName', sprintf('Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin)));
+    plot(omega_data, storage_model, '-', 'DisplayName', sprintf('Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin)));
 end
 plot(omega_data, storage_data, 'o-', 'DisplayName', 'Data');
 set(gca,'xscale','log')
@@ -67,7 +67,7 @@ for ii = 1:length(weight_loss_values)
     loss_model = imag(ComplexModulus_model);
 
     % Plot loss modulus
-    plot(omega_data, loss_model, 'o-', 'DisplayName', sprintf('Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin)));
+    plot(omega_data, loss_model, '-', 'DisplayName', sprintf('Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin)));
 end
 plot(omega_data, loss_data, 'o-', 'DisplayName', 'Data');
 set(gca,'xscale','log')
