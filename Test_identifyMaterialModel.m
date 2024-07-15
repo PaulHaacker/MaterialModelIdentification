@@ -67,14 +67,14 @@ loss_model = imag(ComplexModulus_model);
 figure
 tiledlayout('flow')
 nexttile
-plot(omega_data,storage_data,'o-',omega_data,storage_model,'o-');
+plot(omega_data,storage_data,'o-',omega_data,storage_model);
 set(gca,'xscale','log')
 grid on
 legend('data','model')
 ylabel('storage modulus $E"= \Re\{E^\ast\}$')
 xlabel('frequency in Hz')
 nexttile
-plot(omega_data,loss_data,'o-',omega_data,loss_model,'o-');
+plot(omega_data,loss_data,'o-',omega_data,loss_model);
 set(gca,'xscale','log')
 grid on
 legend('data','model')
