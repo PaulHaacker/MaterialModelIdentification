@@ -11,12 +11,13 @@ function par_norm_lsqnonlin = identify_SingleOrderModel_creep(time, stress_data,
 % The parameters are subject to constraints, namely they are partially
 % bounded:
 lb = zeros(4,1);
-ub = [1 inf inf inf]';
+% ub = [1 inf inf inf]';
+ub = [1 ones(1,3)*10^4]';
 
 % Define options for lsqnonlin
 options = optimoptions("lsqnonlin","Algorithm","interior-point",'Display','off');
 
 % Call lsqnonlin to optimize parameters
-par_norm_lsqnonlin = lsqnonlin(@(p) strain_data - G1StressDriven_SingleOrderModel(p,stress_data,time,strain_data(1)), ...
+par_norm_lsqnonlin = lsqnonlin(@(p) [strain_data - G1StressDriven_SingleOrderModel(p,stress_data,time,strain_data(1))], ...
     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel(p), options);
 end

@@ -11,7 +11,7 @@ par =   [alpha;
         p_1]; % parameters
 
 time = 0:.001:1; % time array
-stress = ones(size(time));
+stress = min(time / 0.5, 1); % ramp up to 1 at 0.5 seconds and stay constant
 strain_0 = 0;
 
 strain = G1StressDriven_SingleOrderModel(par2par_norm(par),stress,time,strain_0);

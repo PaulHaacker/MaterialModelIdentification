@@ -13,8 +13,9 @@ par =   [alpha;
         E_1;
         p_1]; % parameters
 
-time = 0:.001:1; % time array
-stress_data = ones(size(time));
+time = 0:.01:10; % time array
+% stress_data = sin(time); % 
+stress_data = min(time / 0.1, 1); % ramp up to 1 at 0.5 seconds and stay constant
 strain_0 = 0;
 
 strain_data = G1StressDriven_SingleOrderModel(par2par_norm(par),stress_data,time,strain_0);
@@ -33,8 +34,9 @@ strain_data = G1StressDriven_SingleOrderModel(par2par_norm(par),stress_data,time
 %                   d = par_norm(4) = E_0*E_1/p_1> 0
 
 % initial guess
-par_0 = ones(4,1);
-% par_0 = par;
+% par_0 = ones(4,1);
+% par_0 = [0.0084621   0.0015443      2.2051   0.0033959]';
+par_0 = par*1.1;
 par_norm0 = par2par_norm(par_0); % normalized parameters
 
 par_norm_lsqnonlin = identify_SingleOrderModel_creep(time, stress_data,...
