@@ -15,7 +15,7 @@ par_test =   [alpha;
 par_norm_test = par2par_norm(par_test);
 
 omega_data = logspace(-5,5,100); % frequency range
-ComplexModulus_data = ComplexModulusFcn_3parLinear(par_norm_test,omega_data);
+ComplexModulus_data = ComplexMod_SingleOrderModel(par_norm_test,omega_data);
 storage_data = real(ComplexModulus_data);
 loss_data = imag(ComplexModulus_data);
 
@@ -31,10 +31,6 @@ loss_data = addCustomNoise(loss_data,noise_lvl);
 %                   b = par_norm(2) = E_1/p_1 > 0
 %                   c = par_norm(3) = E_0 + E_1 > 0
 %                   d = par_norm(4) = E_0*E_1/p_1> 0
-% The parameters are subject to constraints, namely they are partially
-% bounded:
-lb = zeros(4,1);
-ub = [1 inf inf inf]';
 
 % nonlinear inequality constraint is defined in "nonlincon_identification"
 
@@ -47,9 +43,8 @@ par_norm0 = par2par_norm(par_0); % normalized parameters
 weight_loss = 1;
 
 par_norm_lsqnonlin = ...
-    identifyMaterialModel(omega_data, storage_data, loss_data, ...
-    par_norm0, lb, ub, weight_loss,...
-    @(par,om)ComplexModulusFcn_3parLinear(par,om),@(p) nonlincon_3parLinear(p));
+    identify_SingleOrderModel_DMA(omega_data, storage_data, loss_data, ...
+    par_norm0, weight_loss);
 
 % verify solution:
 disp(['True (normalized) parameters:'])
@@ -60,7 +55,7 @@ disp(num2str(par_norm_lsqnonlin'))
 disp(['norm of difference = ',num2str(norm(par_norm_lsqnonlin-par_norm_test))])
 
 % plotting
-ComplexModulus_model = ComplexModulusFcn_3parLinear(par_norm_lsqnonlin,omega_data);
+ComplexModulus_model = ComplexMod_SingleOrderModel(par_norm_lsqnonlin,omega_data);
 storage_model = real(ComplexModulus_model);
 loss_model = imag(ComplexModulus_model);
 

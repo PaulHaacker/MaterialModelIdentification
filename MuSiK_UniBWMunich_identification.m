@@ -49,10 +49,10 @@ hold on;
 for ii = 1:length(weight_loss_values)
     weight_loss = weight_loss_values(ii);
 
-    par_norm_lsqnonlin = identifyMaterialModel(omega_data, storage_data, loss_data, par_norm0, lb, ub, weight_loss, @(par,om)ComplexModulusFcn_3parLinear(par,om), @(p) nonlincon_3parLinear(p));
+    par_norm_lsqnonlin = identify_SingleOrderModel_DMA(omega_data, storage_data, loss_data, par_norm0, weight_loss);
     par_lsqnonlin = par_norm2par(par_norm_lsqnonlin);
 
-    ComplexModulus_model = ComplexModulusFcn_3parLinear(par_norm_lsqnonlin, omega_data);
+    ComplexModulus_model = ComplexMod_SingleOrderModel(par_norm_lsqnonlin, omega_data);
     storage_model = real(ComplexModulus_model);
 
     % Plot storage modulus
@@ -72,10 +72,10 @@ hold on;
 for ii = 1:length(weight_loss_values)
     weight_loss = weight_loss_values(ii);
 
-    par_norm_lsqnonlin = identifyMaterialModel(omega_data, storage_data, loss_data, par_norm0, lb, ub, weight_loss, @(par,om)ComplexModulusFcn_3parLinear(par,om), @(p) nonlincon_3parLinear(p));
+    par_norm_lsqnonlin = identify_SingleOrderModel_DMA(omega_data, storage_data, loss_data, par_norm0, weight_loss);
     par_lsqnonlin = par_norm2par(par_norm_lsqnonlin);
 
-    ComplexModulus_model = ComplexModulusFcn_3parLinear(par_norm_lsqnonlin, omega_data);
+    ComplexModulus_model = ComplexMod_SingleOrderModel(par_norm_lsqnonlin, omega_data);
     loss_model = imag(ComplexModulus_model);
 
     % Plot loss modulus
@@ -125,7 +125,7 @@ set(gcf, 'WindowState', 'maximized');
 % for ii = 1:length(weight_loss_values)
 %     weight_loss = weight_loss_values(ii);
 % 
-%     par_norm_lsqnonlin(:,ii) = identifyMaterialModel(omega_data, storage_data, loss_data, par_norm0, lb, ub, weight_loss, @(par,om)ComplexModulusFcn_3parLinear(par,om), @(p) nonlincon_3parLinear(p));
+%     par_norm_lsqnonlin(:,ii) = identify_SingleOrderModel_DMA(omega_data, storage_data, loss_data, par_norm0, weight_loss);
 % end
 % 
 % % Compute norm differences
@@ -162,18 +162,18 @@ par_norm0 = par2par_norm(par_0);
 weight_loss = 10; % weight value for loss modulus
 
 % fit the fractional model
-par_norm_lsqnonlin_frac = identifyMaterialModel(omega_data, storage_data, loss_data, par_norm0, lb, ub, weight_loss, @(par,om)ComplexModulusFcn_3parLinear(par,om), @(p) nonlincon_3parLinear(p));
+par_norm_lsqnonlin_frac = identify_SingleOrderModel_DMA(omega_data, storage_data, loss_data, par_norm0, weight_loss);
 par_lsqnonlin_frac = par_norm2par(par_norm_lsqnonlin_frac);
 
-ComplexModulus_model_frac = ComplexModulusFcn_3parLinear(par_norm_lsqnonlin_frac, omega_data);
+ComplexModulus_model_frac = ComplexMod_SingleOrderModel(par_norm_lsqnonlin_frac, omega_data);
 storage_model_frac = real(ComplexModulus_model_frac);
 loss_model_frac = imag(ComplexModulus_model_frac);
 
 % fit the whole-order model
-par_norm_lsqnonlin_whole = identifyMaterialModel(omega_data, storage_data, loss_data, par_norm0, lb, ub, weight_loss, @(par,om)ComplexModulusFcn_3parLinear(par,om), @(p) nonlincon_3parLinear_alpha1(p));
+par_norm_lsqnonlin_whole = identify_SingleOrderModel_DMA(omega_data, storage_data, loss_data, par_norm0, weight_loss);
 par_lsqnonlin_whole = par_norm2par(par_norm_lsqnonlin_whole);
 
-ComplexModulus_model_whole = ComplexModulusFcn_3parLinear(par_norm_lsqnonlin_whole, omega_data);
+ComplexModulus_model_whole = ComplexMod_SingleOrderModel(par_norm_lsqnonlin_whole, omega_data);
 storage_model_whole = real(ComplexModulus_model_whole);
 loss_model_whole = imag(ComplexModulus_model_whole);
 

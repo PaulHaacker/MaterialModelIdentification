@@ -26,7 +26,7 @@ par =   [alpha;
         p_1]; % parameters
 
 omega = logspace(-5,5,100); % frequency range
-ComplexModulus = ComplexModulusFcn_3parLinear(par2par_norm(par),omega);
+ComplexModulus = ComplexMod_SingleOrderModel(par2par_norm(par),omega);
 
 % plot
 figure
@@ -35,5 +35,5 @@ nexttile
 plot(omega,real(ComplexModulus),'o-',omega,imag(ComplexModulus),'o-');
 set(gca,'xscale','log')
 grid on
-legend('storage modulus $E"= \Re\{E^\ast\}$','loss modulus $E""= \Im\{E^\ast\}$'  )
+legend('storage modulus $E''= \Re\{E^\ast\}$','loss modulus $E''''= \Im\{E^\ast\}$'  )
 xlabel('frequency in ???')
