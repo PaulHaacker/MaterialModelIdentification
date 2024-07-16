@@ -33,8 +33,8 @@ strain_data = G1StressDriven_SingleOrderModel(par2par_norm(par),stress_data,time
 %                   d = par_norm(4) = E_0*E_1/p_1> 0
 
 % initial guess
-% par_0 = ones(4,1);
-par_0 = par;
+par_0 = ones(4,1);
+% par_0 = par;
 par_norm0 = par2par_norm(par_0); % normalized parameters
 
 par_norm_lsqnonlin = identify_SingleOrderModel_creep(time, stress_data,...

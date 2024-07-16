@@ -17,6 +17,6 @@ ub = [1 inf inf inf]';
 options = optimoptions("lsqnonlin","Algorithm","interior-point",'Display','off');
 
 % Call lsqnonlin to optimize parameters
-par_norm_lsqnonlin = lsqnonlin(@(p) stress_data - G1StressDriven_SingleOrderModel(p,stress_data,time,strain_data(1)), ...
+par_norm_lsqnonlin = lsqnonlin(@(p) strain_data - G1StressDriven_SingleOrderModel(p,stress_data,time,strain_data(1)), ...
     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel(p), options);
 end
