@@ -14,8 +14,10 @@ par =   [alpha;
         p_1]; % parameters
 
 time = 0:.01:10; % time array
-% stress_data = sin(time); % 
-stress_data = min(time / 0.1, 1); % ramp up to 1 at 0.5 seconds and stay constant
+% stress_data = sin(time.^2); % 
+% stress_data = min(time / 0.5, 1); % ramp up to 1 at 0.5 seconds and stay constant
+stress_data = ones(size(time)); % ramp up to 1 at 0.5 seconds and stay constant
+
 strain_0 = 0;
 
 strain_data = G1StressDriven_SingleOrderModel(par2par_norm(par),stress_data,time,strain_0);
@@ -36,10 +38,18 @@ strain_data = G1StressDriven_SingleOrderModel(par2par_norm(par),stress_data,time
 % initial guess
 % par_0 = ones(4,1);
 % par_0 = [0.0084621   0.0015443      2.2051   0.0033959]';
-par_0 = par*1.1;
-par_norm0 = par2par_norm(par_0); % normalized parameters
+% par_0 = par*100;
+% 
+% par_0 = par*(2);
 
-par_norm_lsqnonlin = identify_SingleOrderModel_creep(time, stress_data,...
+
+% par_norm0 = par2par_norm(par_0); % normalized parameters
+
+
+% par_norm0 = [1,10^3,10^3,10^3];
+par_norm0 = [1,1,1,1];
+
+[par_norm_lsqnonlin,res] = identify_SingleOrderModel_creep(time, stress_data,...
     strain_data, par_norm0);
 
 % verify solution:
@@ -49,6 +59,7 @@ disp(['Identified (normalized) parameters:'])
 disp(num2str(par_norm_lsqnonlin'))
 
 disp(['norm of difference = ',num2str(norm(par_norm_lsqnonlin-par2par_norm(par)))])
+disp(['residual = ',num2str(res)])
 
 % plot results
 figure

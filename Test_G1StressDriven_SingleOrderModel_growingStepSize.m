@@ -1,3 +1,5 @@
+clear
+close all
 
 alpha = 1/3;
 E_0 = 2;
