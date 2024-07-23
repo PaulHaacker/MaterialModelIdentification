@@ -19,6 +19,13 @@ options = optimoptions("lsqnonlin","Algorithm","interior-point",'Display','off',
     'StepTolerance',0,'ConstraintTolerance',0);
 
 % Call lsqnonlin to optimize parameters
-[par_norm_lsqnonlin,res] = lsqnonlin(@(p) (strain_data - G1StressDriven_SingleOrderModel(p,stress_data,time,strain_data(1))), ...
+[par_norm_lsqnonlin,res] = lsqnonlin(@(p) LogTimeStepDiff(p,strain_data,stress_data,time), ...
     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel(p), options);
+end
+
+function diff_logdist = LogTimeStepDiff(p,strain_data,stress_data,time)
+    % compute gruenwald time stepping
+    diff_equidist = strain_data - G1StressDriven_SingleOrderModel(p,stress_data,time,strain_data(1));
+    % sample logarithmically
+    [~,diff_logdist] = samplelog(time, diff_equidist);
 end

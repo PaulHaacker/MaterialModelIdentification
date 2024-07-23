@@ -40,14 +40,14 @@ strain_data = G1StressDriven_SingleOrderModel(par2par_norm(par),stress_data,time
 % par_0 = [0.0084621   0.0015443      2.2051   0.0033959]';
 % par_0 = par*100;
 % 
-% par_0 = par*(2);
-
-
+% par_0 = 100*par;
+% 
+% 
 % par_norm0 = par2par_norm(par_0); % normalized parameters
 
 
-% par_norm0 = [1,10^3,10^3,10^3];
-par_norm0 = [1,1,1,1];
+% par_norm0 = [1,10^3,10^3,10^3]';
+par_norm0 = [1,1,1,1]';
 
 [par_norm_lsqnonlin,res] = identify_SingleOrderModel_creep(time, stress_data,...
     strain_data, par_norm0);
@@ -56,7 +56,7 @@ par_norm0 = [1,1,1,1];
 disp(['True (normalized) parameters:'])
 disp(num2str(par2par_norm(par)'))
 disp(['Identified (normalized) parameters:'])
-disp(num2str(par_norm_lsqnonlin'))
+disp(num2str(par_norm_lsqnonlin))
 
 disp(['norm of difference = ',num2str(norm(par_norm_lsqnonlin-par2par_norm(par)))])
 disp(['residual = ',num2str(res)])
