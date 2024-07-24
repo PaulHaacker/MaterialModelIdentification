@@ -40,7 +40,7 @@ strain_data = G1StressDriven_SingleOrderModel(par2par_norm(par),stress_data,time
 % par_0 = [0.0084621   0.0015443      2.2051   0.0033959]';
 % par_0 = par*100;
 % 
-par_0 = par;
+par_0 = .1*par;
 
 
 par_norm0 = par2par_norm(par_0); % normalized parameters
