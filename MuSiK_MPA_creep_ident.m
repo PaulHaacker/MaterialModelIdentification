@@ -14,18 +14,18 @@ strain_data = interp1(creepPK2_processed.time,creepPK2_processed.strain,time);
 
 % verification plot
 % Create a new figure
-figure
-tiledlayout('flow')
-nexttile
-semilogx(creepPK2_processed.time, creepPK2_processed.strain, time, strain_data, 'o')
-title('Strain vs Time')
-xlabel('Time')
-ylabel('Strain')
-nexttile
-semilogx(creepPK2_processed.time, creepPK2_processed.stress, time, stress_data, 'o')
-title('Stress vs Time')
-xlabel('Time')
-ylabel('Stress')
+% figure
+% tiledlayout('flow')
+% nexttile
+% semilogx(creepPK2_processed.time, creepPK2_processed.strain, time, strain_data, 'o')
+% title('Strain vs Time')
+% xlabel('Time')
+% ylabel('Strain')
+% nexttile
+% semilogx(creepPK2_processed.time, creepPK2_processed.stress, time, stress_data, 'o')
+% title('Stress vs Time')
+% xlabel('Time')
+% ylabel('Stress')
 
 % convert to MPa and percent for normalization
 stress_data = stress_data/10^6;
