@@ -9,6 +9,7 @@ load('creep_processed.mat')
 number_sample = 1000;
 
 time = linspace(creepPK2_processed.time(1),creepPK2_processed.time(end),number_sample);
+time = time +1; % modify for logarithmic time scale
 stress_data = interp1(creepPK2_processed.time,creepPK2_processed.stress,time);
 strain_data = interp1(creepPK2_processed.time,creepPK2_processed.strain,time);
 
