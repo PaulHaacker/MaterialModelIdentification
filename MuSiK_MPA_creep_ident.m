@@ -7,7 +7,7 @@ load('creep_processed.mat')
 % sample the data
 
 number_sample = 1000;
-dataStruct = creepPK4_processed;
+dataStruct = creepPK2_processed;
 
 time = linspace(dataStruct.time(1),dataStruct.time(end),number_sample);
 time = time; % modify for logarithmic time scale
@@ -42,19 +42,21 @@ strain_data = strain_data*100;
 %                   d = par_norm(4) = E_0*E_1/p_1> 0
 
 % initial guess
-% par_0 = [.16 2222 1000 1000];
+par_0 = [.16 2222 1000 1000];
 % par_0 = [.3 1000 1000 1000];
-par_0 = [1 1 1 1];
+% par_0 = [1 1 1 1];
 % par_0 = [.3 1000 1000 1000];
 % par_0 = par*1.1;
 par_norm0 = par2par_norm(par_0); % normalized parameters
 
-par_norm_lsqnonlin = identify_SingleOrderModel_creep(...
+[par_norm_lsqnonlin,res] = identify_SingleOrderModel_creep(...
     time, stress_data,...
     strain_data, par_norm0);
 
 disp(['Identified parameters: (alpha E_0 E_1 p_1) ='])
 disp(num2str(par_norm2par(par_norm_lsqnonlin)'))
+disp(['residual =', num2str(res)])
+
 
 % plot results
 [t_log,strain_data_log] = samplelog(time, strain_data);
