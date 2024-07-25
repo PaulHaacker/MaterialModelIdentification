@@ -8,11 +8,16 @@ function [par_norm_lsqnonlin,res] = identify_SingleOrderModel_creep(time, stress
 % Output:
 %   par_norm_lsqnonlin   - Identified normalized parameters obtained through optimization.
 
+warning off
+% warning('off', 'MATLAB:interp1:NaNinY');
+
 % The parameters are subject to constraints, namely they are partially
 % bounded:
 lb = zeros(4,1);
+lb(1) =0.00;
 % ub = [1 inf inf inf]';
 ub = [1 ones(1,3)*10^4]';
+ub(1) =  .3;
 
 % Define options for lsqnonlin
 options = optimoptions("lsqnonlin","Algorithm","interior-point",'Display','off');
@@ -22,6 +27,8 @@ options = optimoptions("lsqnonlin","Algorithm","interior-point",'Display','off')
 % Call lsqnonlin to optimize parameters
 [par_norm_lsqnonlin,res] = lsqnonlin(@(p) LogTimeStepDiff(p,strain_data,stress_data,time), ...
     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel(p), options);
+% [par_norm_lsqnonlin,res] = lsqnonlin(@(p) LogTimeStepDiff(p,strain_data,stress_data,time), ...
+%     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel_alpha1(p), options);
 % [par_norm_lsqnonlin,res] = lsqnonlin(@(p) EquidistTimeStepDiff(p,strain_data,stress_data,time), ...
 %     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel(p), options);
 % [par_norm_lsqnonlin,res] = lsqnonlin(@(p) EquidistTimeStepDiff(p,strain_data,stress_data,time), ...
@@ -39,4 +46,8 @@ function diff_logdist = LogTimeStepDiff(p,strain_data,stress_data,time)
     diff_equidist = strain_data - G1StressDriven_SingleOrderModel(p,stress_data,time,strain_data(1));
     % sample logarithmically
     [~,diff_logdist] = samplelog(time, diff_equidist);
+    % Debugging: Check if diff_logdist contains NaN or Inf
+    if any(isnan(diff_logdist)) || any(isinf(diff_logdist))
+        error('diff_logdist contains NaN or Inf values');
+    end
 end
