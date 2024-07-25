@@ -23,7 +23,7 @@ p_2 = par(7);
 a11 = 1/E_1/E_2;
 a01 = 1/E_1/p_2;
 a10 = 1/E_2/p_1;
-a0 = 1/p1/p2;
+a0 = 1/p_1/p_2;
 b11= 1/E_1 + 1/E_2 + E_0/E_1/E_2;
 b01 = (1+E_0/E_2)/p_1;
 b10 = (1+E_0/E_1)/p_2;
@@ -31,6 +31,6 @@ b0 = E_0/p_1/p_2;
 
 s = 1j*omega;
 
-ComplexModulus = (b11*s.^(alpha_1+alpha_2)+b01*s^alpha_2+b10*s^alpha_1+b0)./...
-    (a11*s.^(alpha_1+alpha_2)+a01*s^alpha_2+a10*s^alpha_1+a0);
+ComplexModulus = (b11*s.^(alpha_1+alpha_2)+b01*s.^alpha_2+b10*s.^alpha_1+b0)./...
+    (a11*s.^(alpha_1+alpha_2)+a01*s.^alpha_2+a10*s.^alpha_1+a0);
 end
