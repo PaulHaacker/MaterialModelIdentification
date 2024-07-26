@@ -20,7 +20,7 @@ strain_0 = 0;
 % plot results
 
 figure
-semilogx(t_vec,strain_vec,'o-')
+plot(t_vec,strain_vec,'o-')
 xlabel('time $t$')
 ylabel('strain $\varepsilon(t)$')
 title('G1-algorithm applied to $D^\alpha \sigma + b\sigma = cD^\alpha \varepsilon + d\varepsilon$')

@@ -2,6 +2,8 @@
 clear
 close all
 
+
+%% generate data
 alpha_1 = .5;
 alpha_2 = .2;
 E_0 = 100;
@@ -26,6 +28,8 @@ loss_data = imag(ComplexModulus_data);
 % noise_lvl = 0.05;
 % storage_data = addCustomNoise(storage_data,noise_lvl);
 % loss_data = addCustomNoise(loss_data,noise_lvl);
+
+%% identification
 
 % initial guess
 par_0 = ones(7,1);
