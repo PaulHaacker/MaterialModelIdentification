@@ -15,9 +15,9 @@ function par_norm_lsqnonlin = identify_DoubleOrderModel_DMA(omega_data, storage_
 
 % The parameters are subject to constraints, namely they are partially
 % bounded:
-lb = zeros(4,1);
-ub = [1 inf inf inf]';
-
+lb = zeros(7,1);
+ub = ones(7,1);
+ub(3:end) = inf;
 
 % Define options for lsqnonlin
 options = optimoptions("lsqnonlin","Algorithm","interior-point",'Display','off');
