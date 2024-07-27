@@ -11,8 +11,7 @@ function [par_norm_lsqnonlin,res] = identify_DoubleOrderModel_creep(time, stress
 warning off
 % warning('off', 'MATLAB:interp1:NaNinY');
 
-% The parameters are subject to constraints, namely they are partially
-% bounded:
+% The parameters are subject to constraints
 lb = zeros(7,1);
 % lb(1) =0.15;
 % ub = [1 inf inf inf]';
