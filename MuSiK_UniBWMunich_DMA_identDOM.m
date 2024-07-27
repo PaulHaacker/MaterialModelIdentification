@@ -61,7 +61,7 @@ for ii = 1:length(weight_loss_values)
     storage_model = real(ComplexModulus_model);
 
     % Plot storage modulus
-    plot(omega_data, storage_model, '-', 'DisplayName', sprintf('Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin)));
+    plot(omega_data, storage_model, '-', 'DisplayName', sprintf('Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha_1,\\alpha_2,E_0,E_1,p_1,E_2,p_2) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin)));
 end
 plot(omega_data, storage_data, 'o-', 'DisplayName', 'Data');
 set(gca,'xscale','log')
@@ -83,7 +83,7 @@ for ii = 1:length(weight_loss_values)
     loss_model = imag(ComplexModulus_model);
 
     % Plot loss modulus
-    plot(omega_data, loss_model, '-', 'DisplayName', sprintf('Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin)));
+    plot(omega_data, loss_model, '-', 'DisplayName', sprintf('Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha_1,\\alpha_2,E_0,E_1,p_1,E_2,p_2) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin)));
 end
 plot(omega_data, loss_data, 'o-', 'DisplayName', 'Data');
 set(gca,'xscale','log')
@@ -98,8 +98,7 @@ sgtitle({'Identification of Material Model Parameters using lsqnonlin,';...
     ['i.e. find parameter $p$: $\min_p \sum_{i = data points} ' ...
     '({}^{data}E''_i-{}^{model}E''(p,\omega_i))^2+W_L({}^{data}E''''_i-{}^{model}E''''(p,\omega_i))^2$'];...
     'Data from Mastercurve at $20{}^\circ \mathrm C$ of Temperatures $-10{}^\circ \mathrm C,\dots,+40{}^\circ \mathrm C$'; ...
-    ['Model: $\left(\frac{1}{E_1}{}^\mathrm C D^\alpha_{-\infty}+\frac{1}{p_1}\right)\sigma = ...' ...
-    'E_0\left(\left(\frac{1}{E_0}+\frac{1}{E_1}\right){}^\mathrm C D^\alpha_{-\infty}+\frac{1}{p_1}\right)\varepsilon$']});
+    ['Double-Order Model.']});
 
 set(gcf, 'WindowState', 'maximized');
 
@@ -190,7 +189,7 @@ loss_model_frac = imag(ComplexModulus_model_frac);
 figure;
 subplot(2, 1, 1);
 hold on;
-plot(omega_data, storage_model_frac, '-', 'DisplayName', sprintf('fractional-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_frac)));
+plot(omega_data, storage_model_frac, '-', 'DisplayName', sprintf('fractional-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha_1,\\alpha_2,E_0,E_1,p_1,E_2,p_2) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_frac)));
 % plot(omega_data, storage_model_whole, '-', 'DisplayName', sprintf('whole-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_whole)));
 plot(omega_data, storage_data, 'o-', 'DisplayName', 'Data');
 set(gca,'xscale','log')
@@ -203,7 +202,7 @@ legend('show', 'Location','northwest');
 % Plot loss modulus
 subplot(2, 1, 2);
 hold on;
-plot(omega_data, loss_model_frac, '-', 'DisplayName', sprintf('fractional-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_frac)));
+plot(omega_data, loss_model_frac, '-', 'DisplayName', sprintf('fractional-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha_1,\\alpha_2,E_0,E_1,p_1,E_2,p_2) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_frac)));
 % plot(omega_data, loss_model_whole, '-', 'DisplayName', sprintf('whole-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_whole)));
 plot(omega_data, loss_data, 'o-', 'DisplayName', 'Data');
 set(gca,'xscale','log')
