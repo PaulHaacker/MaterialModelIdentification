@@ -46,7 +46,7 @@ strain_data = G1StressDriven_DoubleOrderModel((par),stress_data,time,strain_0);
 % par_0 = [0.0084621   0.0015443      2.2051   0.0033959]';
 % par_0 = par*100;
 % 
-par_0 = .9*par;
+par_0 = par;
 
 % par_norm0 = [1,10^3,10^3,10^3]';
 % par_norm0 = [1,1,1,1]';

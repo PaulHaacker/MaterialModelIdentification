@@ -61,13 +61,15 @@ disp(['residual =', num2str(res)])
 % plot results
 [t_log,strain_data_log] = samplelog(time, strain_data);
 figure
-semilogx(time, strain_data,'.-',t_log,strain_data_log,'o',time,G1StressDriven_SingleOrderModel(par_norm_lsqnonlin,...
+% semilogx(time, strain_data,'.-',t_log,strain_data_log,'o',time,G1StressDriven_SingleOrderModel(par_norm_lsqnonlin,...
+%     stress_data,time, strain_data(1)))
+semilogx(dataStruct.time, dataStruct.strain*100,'.-',time, strain_data,'.-',t_log,strain_data_log,'ko',time,G1StressDriven_SingleOrderModel(par_norm_lsqnonlin,...
     stress_data,time, strain_data(1)))
 xlabel('time $t$')
 ylabel('strain $\varepsilon(t)$')
 title({'Identification of $D^\alpha \sigma + b\sigma = cD^\alpha \varepsilon + d\varepsilon$'; ...
         sprintf('Identified parameters: $(\\alpha,b,c,d) = (%s)$', array2strCommas(par_norm_lsqnonlin))})
-legend('exp. data','exp. data logarithmically sampled','identified model','Location','southeast')
+legend('all exp. data','sampled exp. data','exp. data logarithmically sampled','identified model','Location','southeast')
 
 function str = array2strCommas(array)
     str = sprintf('%.2f, ', array);

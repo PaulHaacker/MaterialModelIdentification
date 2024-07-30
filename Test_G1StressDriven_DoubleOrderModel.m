@@ -2,7 +2,7 @@
 % implies that parameters b, c, d must satisfy c-d/b > 0 ! Else the model
 % is unphysical!
 alpha_1 = .5;
-alpha_2 = 1/2;
+alpha_2 = .8;
 E_0 = 100;
 E_1 = 20;
 E_2 = 20;

@@ -24,6 +24,7 @@ lb = zeros(7,1);
 % lb(1) =0.15;
 % ub = [1 inf inf inf]';
 ub = ones(7,1);
+ub(1:2) = .2;
 ub(3:end) = ub(3:end)*10^4;
 % ub = [1 ones(1,3)*10^4]';
 % ub(1) =  .18;
@@ -36,7 +37,7 @@ options = optimoptions("lsqnonlin","Algorithm","interior-point",'Display','off')
 
 % Optimize creep alone
 CreepDiff = @(p) LogTimeStepDiff(p,strain_data,stress_data,time);
-[~,res_creep] = lsqnonlin(CreepDiff, ...
+[par_creep,res_creep] = lsqnonlin(CreepDiff, ...
     initial_guess, lb, ub, options);
 % [par_norm_lsqnonlin,res] = lsqnonlin(@(p) LogTimeStepDiff(p,strain_data,stress_data,time), ...
 %     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_DoubleOrderModel_alpha1(p), options);
@@ -52,11 +53,18 @@ DMADiff = @(p) reshape(...
 [par_DMA,res_DMA] = lsqnonlin(DMADiff, ...
     initial_guess, lb, ub, options);
 
-weight_creep = res_DMA/res_creep;
+% weight_creep = res_DMA/res_creep;
+% weight_creep = 1.97*10^9;
+% weight_creep = 1*10^9;
+% weight_creep = 1*10^3;
+weight_creep = 1;
 % weight_DMA = 1;
 % weight_DMA = res_creep/res_DMA;
+
 [par_lsqnonlin,res] = lsqnonlin(@(p) [DMADiff(p);sqrt(weight_creep)*CreepDiff(p)'], ...
-    par_DMA, lb, ub, options);
+    par_creep, lb, ub, options);
+% [par_lsqnonlin,res] = lsqnonlin(@(p) [DMADiff(p);sqrt(weight_creep)*CreepDiff(p)'], ...
+%     initial_guess, lb, ub, options);
 % [par_lsqnonlin,res] = lsqnonlin(@(p) [sqrt(weight_DMA)*DMADiff(p);CreepDiff(p)'], ...
 %     par_DMA, lb, ub, options);
 end
