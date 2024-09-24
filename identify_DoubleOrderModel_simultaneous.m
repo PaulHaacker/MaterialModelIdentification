@@ -21,10 +21,11 @@ warning off
 
 % The parameters are subject to constraints
 lb = zeros(7,1);
+% lb(1:2) = .02;
 % lb(1) =0.15;
 % ub = [1 inf inf inf]';
 ub = ones(7,1);
-ub(1:2) = .2;
+% ub(1:2) = .2;
 ub(3:end) = ub(3:end)*10^4;
 % ub = [1 ones(1,3)*10^4]';
 % ub(1) =  .18;
@@ -57,7 +58,7 @@ DMADiff = @(p) reshape(...
 % weight_creep = 1.97*10^9;
 % weight_creep = 1*10^9;
 % weight_creep = 1*10^3;
-weight_creep = 1;
+weight_creep = 1*10^3;
 % weight_DMA = 1;
 % weight_DMA = res_creep/res_DMA;
 

@@ -14,16 +14,18 @@ warning off
 % The parameters are subject to constraints, namely they are partially
 % bounded:
 lb = zeros(4,1);
-lb(1) =0.15;
+% lb(1) =0.03;
+% lb(1) =0.15;
 % ub = [1 inf inf inf]';
 ub = [1 ones(1,3)*10^4]';
-ub(1) =  .18;
+% ub(1) =  .1;
+% ub(1) =  .18;
 % ub(2) = 100;
 
 % Define options for lsqnonlin
-options = optimoptions("lsqnonlin","Algorithm","interior-point",'Display','off');
-% options = optimoptions("lsqnonlin","Algorithm","interior-point",'Display','off','OptimalityTolerance',1e-9, ...
-%     'StepTolerance',0,'ConstraintTolerance',0);
+% options = optimoptions("lsqnonlin","Algorithm","interior-point",'Display','off');
+options = optimoptions("lsqnonlin","Algorithm","interior-point",'Display','off','OptimalityTolerance',1e-9, ...
+    'StepTolerance',0,'ConstraintTolerance',0);
 
 % Call lsqnonlin to optimize parameters
 [par_norm_lsqnonlin,res] = lsqnonlin(@(p) LogTimeStepDiff(p,strain_data,stress_data,time), ...

@@ -7,9 +7,13 @@ load('creep_processed.mat')
 % sample the data
 
 number_sample = 1000;
-dataStruct = creepPK2_processed;
+dataStruct = creepPK4_processed;
 
-time = linspace(dataStruct.time(1),dataStruct.time(end),number_sample);
+% end_indx = length(dataStruct.time);
+end_indx = floor(.8*length(dataStruct.time));
+
+% time = linspace(dataStruct.time(1),dataStruct.time(end),number_sample);
+time = linspace(dataStruct.time(1),dataStruct.time(end_indx),number_sample);
 time = time; % modify for logarithmic time scale
 stress_data = interp1(dataStruct.time,dataStruct.stress,time);
 strain_data = interp1(dataStruct.time,dataStruct.strain,time);
@@ -42,9 +46,10 @@ strain_data = strain_data*100;
 %                   d = par_norm(4) = E_0*E_1/p_1> 0
 
 % initial guess
-par_0 = [.16 2222 1000 1000];
+% par_0 = [.16 2222 1000 1000];
 % par_0 = [.3 1000 1000 1000];
 % par_0 = [1 1 1 1];
+par_0 = [0.06 343 3000 7759];
 % par_0 = [.3 1000 1000 1000];
 % par_0 = par*1.1;
 par_norm0 = par2par_norm(par_0); % normalized parameters

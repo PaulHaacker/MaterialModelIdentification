@@ -51,7 +51,9 @@ DMADiff = @(p) reshape(...
 [~,res_DMA] = lsqnonlin(DMADiff, ...
     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel(p), options);
 
-weight_DMA = 10^2/res_DMA;
+weight_DMA =1;
+% weight_DMA = 5*10^-4;
+% weight_DMA = 10^2/res_DMA;
 % weight_DMA = res_creep/res_DMA;
 [par_norm_lsqnonlin,res] = lsqnonlin(@(p) [sqrt(weight_DMA)*DMADiff(p);CreepDiff(p)'], ...
     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel(p), options);

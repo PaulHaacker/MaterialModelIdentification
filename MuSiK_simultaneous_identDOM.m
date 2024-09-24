@@ -67,14 +67,23 @@ DMA.weight_loss = weight_loss;
 % 0.1512739      25.83276      928.5537      4.453071
 
 
-alpha_1 = .2;
+alpha_1 = .1;
 E_0 = 20;
 E_1 = 10;
 p_1 = 10;
 
-alpha_2 = .05;
-E_2 = 100;
-p_2 = 50;
+alpha_2 = .1;
+E_2 = 20;
+p_2 = 10;
+
+% alpha_1 = .2;
+% E_0 = 20;
+% E_1 = 10;
+% p_1 = 10;
+% 
+% alpha_2 = .05;
+% E_2 = 100;
+% p_2 = 50;
 
 par_0 =   [ alpha_1;
         alpha_2 ;
@@ -91,66 +100,136 @@ disp(num2str(par_lsqnonlin_frac'))
 disp(['residual =', num2str(res)])
 
 
+% %% plot results
+% [t_log,strain_data_log] = samplelog(time, strain_data);
+% figure
+% semilogx(time, strain_data,'.-',t_log,strain_data_log,'o',time,G1StressDriven_DoubleOrderModel(par_lsqnonlin_frac,...
+%     stress_data,time, strain_data(1)))
+% xlabel('time $t$')
+% ylabel('strain $\varepsilon(t)$')
+% title({'Identification of DOM'; ...
+%         sprintf('Identified parameters: $(\\alpha_1,\\alpha_2,E_0,E_1,p_1,E_2,p_2) = (%s)$', array2strCommas(par_lsqnonlin_frac))})
+% legend('exp. data','exp. data logarithmically sampled','identified model','Location','southeast')
+% set(gca, 'FontSize', 14)
+% 
+% ComplexModulus_model_frac = ComplexMod_DoubleOrderModel(par_lsqnonlin_frac, omega_data);
+% storage_model_frac = real(ComplexModulus_model_frac);
+% loss_model_frac = imag(ComplexModulus_model_frac);
+% 
+% % % fit the whole-order model
+% % par_norm_lsqnonlin_whole = identify_DoubleOrderModel_DMA(omega_data, storage_data, loss_data, par_norm0, weight_loss);
+% % par_lsqnonlin_whole = par_norm2par(par_norm_lsqnonlin_whole);
+% % 
+% % ComplexModulus_model_whole = ComplexMod_DoubleOrderModel(par_norm_lsqnonlin_whole, omega_data);
+% % storage_model_whole = real(ComplexModulus_model_whole);
+% % loss_model_whole = imag(ComplexModulus_model_whole);
+% 
+% % Plot storage modulus
+% figure;
+% subplot(2, 1, 1);
+% hold on;
+% plot(omega_data, storage_model_frac, '-', 'DisplayName', sprintf('fractional-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha_1,\\alpha_2,E_0,E_1,p_1,E_2,p_2) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_frac)));
+% % plot(omega_data, storage_model_whole, '-', 'DisplayName', sprintf('whole-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_whole)));
+% plot(omega_data, storage_data, 'o-', 'DisplayName', 'Data');
+% set(gca,'xscale','log')
+% set(gca, 'FontSize', 14)
+% grid on
+% ylabel('Storage Modulus in MPa')
+% xlabel('Frequency in Hz')
+% legend('show', 'Location','northwest');
+% 
+% % Plot loss modulus
+% subplot(2, 1, 2);
+% hold on;
+% plot(omega_data, loss_model_frac, '-', 'DisplayName', 'fractional-order Model');
+% % plot(omega_data, loss_model_whole, '-', 'DisplayName', sprintf('whole-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_whole)));
+% plot(omega_data, loss_data, 'o-', 'DisplayName', 'Data');
+% set(gca,'xscale','log')
+% set(gca, 'FontSize', 14)
+% grid on
+% ylabel('Loss Modulus in MPa')
+% xlabel('Frequency in Hz')
+% % legend('show', 'Location','southwest');
+% 
+% % Title for the whole subplot
+% sgtitle({'Identification of Material Model Parameters using lsqnonlin,';...
+%     ['i.e. find parameter $p$: $\min_p \sum_{i = data points} ' ...
+%     '({}^{data}E''_i-{}^{model}E''(p,\omega_i))^2+W_L({}^{data}E''''_i-{}^{model}E''''(p,\omega_i))^2$'];...
+%     'Data from Mastercurve at $20{}^\circ \mathrm C$ of Temperatures $-10{}^\circ \mathrm C,\dots,+40{}^\circ \mathrm C$'; ...
+%     ['Model: DOM']});
+% 
+% set(gcf, 'WindowState', 'maximized');
+% 
+% function str = array2strCommas(array)
+%     str = sprintf('%.2f, ', array);
+%     str = str(1:end-2);
+% end
+% 
+% function [sorted_a, sorted_b, sorted_c] = sortArrays(a, b, c)
+%     combined = [a, b, c];
+%     sorted_combined = sortrows(combined, 1);
+% 
+%     sorted_a = sorted_combined(:, 1);
+%     sorted_b = sorted_combined(:, 2);
+%     sorted_c = sorted_combined(:, 3);
+% end
+
 %% plot results
 [t_log,strain_data_log] = samplelog(time, strain_data);
-figure
-semilogx(time, strain_data,'.-',t_log,strain_data_log,'o',time,G1StressDriven_DoubleOrderModel(par_lsqnonlin_frac,...
-    stress_data,time, strain_data(1)))
+
+% Create a fullscreen figure
+figure('WindowState', 'maximized');
+
+% Create a tiled layout with 2 rows and 2 columns
+t = tiledlayout(2, 2);
+
+% Adjust the layout to span the first plot across two columns
+nexttile([1 2])
+semilogx(time,G1StressDriven_DoubleOrderModel(par_lsqnonlin_frac,...
+    stress_data,time, strain_data(1)),t_log,strain_data_log,'o',time, strain_data,'.-')
 xlabel('time $t$')
-ylabel('strain $\varepsilon(t)$')
-title({'Identification of DOM'; ...
-        sprintf('Identified parameters: $(\\alpha_1,\\alpha_2,E_0,E_1,p_1,E_2,p_2) = (%s)$', array2strCommas(par_lsqnonlin_frac))})
-legend('exp. data','exp. data logarithmically sampled','identified model','Location','southeast')
-set(gca, 'FontSize', 14)
+ylabel('strain $\varepsilon(t)$ in \%')
+% title({'Identification of $D^\alpha \sigma + b\sigma = cD^\alpha \varepsilon + d\varepsilon$'; ...
+%         sprintf('Identified parameters: $(\\alpha,b,c,d) = (%s)$', array2strCommas(par_lsqnonlin_frac))})
+legend('identified model','exp. data logarithmically sampled','exp. data','Location','southeast')
+set(gca, 'FontSize', 12)
 
 ComplexModulus_model_frac = ComplexMod_DoubleOrderModel(par_lsqnonlin_frac, omega_data);
 storage_model_frac = real(ComplexModulus_model_frac);
 loss_model_frac = imag(ComplexModulus_model_frac);
 
-% % fit the whole-order model
-% par_norm_lsqnonlin_whole = identify_DoubleOrderModel_DMA(omega_data, storage_data, loss_data, par_norm0, weight_loss);
-% par_lsqnonlin_whole = par_norm2par(par_norm_lsqnonlin_whole);
-% 
-% ComplexModulus_model_whole = ComplexMod_DoubleOrderModel(par_norm_lsqnonlin_whole, omega_data);
-% storage_model_whole = real(ComplexModulus_model_whole);
-% loss_model_whole = imag(ComplexModulus_model_whole);
-
 % Plot storage modulus
-figure;
-subplot(2, 1, 1);
+nexttile
 hold on;
-plot(omega_data, storage_model_frac, '-', 'DisplayName', sprintf('fractional-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha_1,\\alpha_2,E_0,E_1,p_1,E_2,p_2) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_frac)));
+plot(omega_data, storage_model_frac, '-', 'DisplayName', 'identified model');
 % plot(omega_data, storage_model_whole, '-', 'DisplayName', sprintf('whole-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_whole)));
 plot(omega_data, storage_data, 'o-', 'DisplayName', 'Data');
 set(gca,'xscale','log')
-set(gca, 'FontSize', 14)
+set(gca, 'FontSize', 12)
 grid on
-ylabel('Storage Modulus in MPa')
+ylabel('Storage Modulus in MPa/\%')
 xlabel('Frequency in Hz')
 legend('show', 'Location','northwest');
 
 % Plot loss modulus
-subplot(2, 1, 2);
+nexttile
 hold on;
-plot(omega_data, loss_model_frac, '-', 'DisplayName', 'fractional-order Model');
+plot(omega_data, loss_model_frac, '-', 'DisplayName', sprintf('fractional-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_frac)));
 % plot(omega_data, loss_model_whole, '-', 'DisplayName', sprintf('whole-order Model, Weight Loss $ W_L = %d$, Parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_whole)));
 plot(omega_data, loss_data, 'o-', 'DisplayName', 'Data');
 set(gca,'xscale','log')
-set(gca, 'FontSize', 14)
+set(gca, 'FontSize', 12)
 grid on
-ylabel('Loss Modulus in MPa')
+ylabel('Loss Modulus in MPa/\%')
 xlabel('Frequency in Hz')
 % legend('show', 'Location','southwest');
 
-% Title for the whole subplot
-sgtitle({'Identification of Material Model Parameters using lsqnonlin,';...
-    ['i.e. find parameter $p$: $\min_p \sum_{i = data points} ' ...
-    '({}^{data}E''_i-{}^{model}E''(p,\omega_i))^2+W_L({}^{data}E''''_i-{}^{model}E''''(p,\omega_i))^2$'];...
-    'Data from Mastercurve at $20{}^\circ \mathrm C$ of Temperatures $-10{}^\circ \mathrm C,\dots,+40{}^\circ \mathrm C$'; ...
-    ['Model: DOM']});
+% Title for the whole subplot layout
+sgtitle({'Identification of DOM Parameters using lsqnonlin,';...
+    sprintf('fractional-order Model, Weight Loss $ W_L = %d$, Parameters: $$(\\alpha_1,\\alpha_2,E_0,E_1,p_1,E_2,p_2) = (%s)$', weight_loss, array2strCommas(par_lsqnonlin_frac))}, ...
+    'Interpreter','Latex');
 
-set(gcf, 'WindowState', 'maximized');
-
+%% fcns
 function str = array2strCommas(array)
     str = sprintf('%.2f, ', array);
     str = str(1:end-2);
