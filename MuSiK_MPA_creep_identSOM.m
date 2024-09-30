@@ -6,11 +6,11 @@ load('creep_processed.mat')
 
 % sample the data
 
-number_sample = 1000;
 dataStruct = creepPK4_processed;
+number_sample = length(dataStruct.stress);
 
 % end_indx = length(dataStruct.time);
-end_indx = floor(.8*length(dataStruct.time));
+end_indx = floor(.8*length(dataStruct.time)); % cut off last bit of data which is relaxation
 
 % time = linspace(dataStruct.time(1),dataStruct.time(end),number_sample);
 time = linspace(dataStruct.time(1),dataStruct.time(end_indx),number_sample);

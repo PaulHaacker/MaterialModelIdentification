@@ -22,8 +22,8 @@ c = par_norm(3);
 d = par_norm(4);
 
 % paramters of time stepping
-N_c = 50; % number of steps performed with constant dt
-N_d = 5; % number of times the time step is doubled and the constant time step integration is performed, = N_d - 1
+N_c = 10; % number of steps performed with constant dt
+N_d = 15; % number of times the time step is doubled and the constant time step integration is performed, = N_d - 1
 
 T = tspan(2)-tspan(1);
 
