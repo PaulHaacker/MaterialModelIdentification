@@ -7,6 +7,8 @@ load('creep_processed.mat')
 % sample the data
 
 dataStruct = creepPK4_processed;
+
+% number_sample = 1000;
 number_sample = length(dataStruct.stress);
 
 % end_indx = length(dataStruct.time);
@@ -76,6 +78,11 @@ title({'Identification of $D^\alpha \sigma + b\sigma = cD^\alpha \varepsilon + d
         sprintf('Identified parameters: $(\\alpha,b,c,d) = (%s)$', array2strCommas(par_norm_lsqnonlin))})
 legend('all exp. data','sampled exp. data','exp. data logarithmically sampled','identified model','Location','southeast')
 
+figure
+semilogx(time, abs(strain_data-G1StressDriven_SingleOrderModel(par_norm_lsqnonlin,...
+    stress_data,time, strain_data(1))))
+title('error')
+xlabel('time $t$')
 function str = array2strCommas(array)
     str = sprintf('%.2f, ', array);
     str = str(1:end-2);
