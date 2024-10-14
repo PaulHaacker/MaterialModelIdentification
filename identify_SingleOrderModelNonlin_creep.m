@@ -29,8 +29,10 @@ options = optimoptions("lsqnonlin","Algorithm","interior-point",'Display','off',
     'StepTolerance',0,'ConstraintTolerance',0);
 
 % Call lsqnonlin to optimize parameters
+% [par_norm_lsqnonlin,res] = lsqnonlin(@(p) GrowingTimeStepDiff(p,strain_data,stress_data,time), ...
+%     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel(p), options);
 [par_norm_lsqnonlin,res] = lsqnonlin(@(p) GrowingTimeStepDiff(p,strain_data,stress_data,time), ...
-    initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel(p), options);
+    initial_guess, lb, ub,  options);
 % [par_norm_lsqnonlin,res] = lsqnonlin(@(p) LogTimeStepDiff(p,strain_data,stress_data,time), ...
 %     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel(p), options);
 % [par_norm_lsqnonlin,res] = lsqnonlin(@(p) LogTimeStepDiff(p,strain_data,stress_data,time), ...
@@ -59,7 +61,7 @@ function diff_logdist = LogTimeStepDiff(p,strain_data,stress_data,time)
 end
 
 function diff_GrowDist = GrowingTimeStepDiff(p,strain_data,stress_data,time)
-    stress_fcn = @(t) interp1(time,stress_data, t);
+    stress_fcn = @(t) interp1(time,stress_data, t,'linear','extrap');
     % compute gruenwald time stepping
     [t_vec_sim, strain_vec_sim] = G1StressDriven_SingleOrderModelNonlin_growingStepSize(p,stress_fcn,[time(1),time(end)],strain_data(1));
     diff_GrowDist = strain_vec_sim - interp1(time, strain_data,t_vec_sim);

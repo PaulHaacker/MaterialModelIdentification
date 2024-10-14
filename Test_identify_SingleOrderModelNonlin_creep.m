@@ -48,13 +48,15 @@ strain_0 = 0;
 % par_0 = [0.0084621   0.0015443      2.2051   0.0033959]';
 % par_0 = par*100;
 % 
-par_0 = .5*par;
+par_0 = .9*par;
 
 % par_norm0 = [1,10^3,10^3,10^3]';
 % par_norm0 = [1,1,1,1]';
 
+tic
 [par_lsqnonlin,res] = identify_SingleOrderModelNonlin_creep(t_vec, stress(t_vec),...
     strain_data, par_0);
+toc
 
 % verify solution:
 disp(['True parameters:'])
