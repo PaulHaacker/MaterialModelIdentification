@@ -1,5 +1,5 @@
 %% Identification of fractional material model from data
-clear
+% clear
 close all
 
 load('creep_processed.mat')
@@ -12,7 +12,8 @@ dataStruct = creepPK4_processed;
 number_sample = length(dataStruct.stress);
 
 % end_indx = length(dataStruct.time);
-end_indx = floor(.8*length(dataStruct.time)); % cut off last bit of data which is relaxation
+end_indx = floor(.04*length(dataStruct.time)); % only include ramp
+% end_indx = floor(.8*length(dataStruct.time)); % cut off last bit of data which is relaxation
 
 % time = linspace(dataStruct.time(1),dataStruct.time(end),number_sample);
 time = linspace(dataStruct.time(1),dataStruct.time(end_indx),number_sample);
@@ -58,13 +59,13 @@ par_0 = [0.09336107    0.03936591      33.08783      386.1137   0]; % result of 
 % par_0 = [.3 1000 1000 1000];
 
 tic
-[par_norm_lsqnonlin,res] = identify_SingleOrderModelNonlin_creep(...
+[par_lsqnonlin,res] = identify_SingleOrderModelNonlin_creep(...
     time, stress_data,...
     strain_data, par_0);
 time_elapsed = toc
 
-disp(['Identified parameters: (alpha E_0 E_1 p_1) ='])
-disp(num2str(par_norm2par(par_norm_lsqnonlin)'))
+disp(['Identified parameters: (alpha E_0 E_1 p_1 G) ='])
+disp(num2str((par_lsqnonlin)'))
 disp(['residual =', num2str(res)])
 
 
@@ -73,20 +74,25 @@ disp(['residual =', num2str(res)])
 figure
 % semilogx(time, strain_data,'.-',t_log,strain_data_log,'o',time,G1StressDriven_SingleOrderModel(par_norm_lsqnonlin,...
 %     stress_data,time, strain_data(1)))
-semilogx(dataStruct.time, dataStruct.strain*100,'.-',time, strain_data,'.-',t_log,strain_data_log,'ko',time,G1StressDriven_SingleOrderModel(par_norm_lsqnonlin,...
-    stress_data,time, strain_data(1)))
+stress_fcn = @(t)interp1(time,stress_data,t,"linear","extrap");
+[tModel,strainModel] = G1StressDriven_SingleOrderModelNonlin_growingStepSize(...
+    par_lsqnonlin,stress_fcn,[time(1),time(end)],strain_data(1));
+
+semilogx(dataStruct.time, dataStruct.strain*100,'.-',time, strain_data,'.-',...
+    t_log,strain_data_log,'ko',...
+    tModel,strainModel )
 xlabel('time $t$')
 ylabel('strain $\varepsilon(t)$')
-title({'Identification of $D^\alpha \sigma + b\sigma = cD^\alpha \varepsilon + d\varepsilon$'; ...
-        sprintf('Identified parameters: $(\\alpha,b,c,d) = (%s)$', array2strCommas(par_norm_lsqnonlin)); ...
+title({'Identification of SOM nl'; ...
+        sprintf('Identified parameters: $(\\alpha,E_0,E_1,p_1,G) = (%s)$', array2strCommas(par_lsqnonlin)); ...
         sprintf('time: %s', num2str(time_elapsed))})
 legend('all exp. data','sampled exp. data','exp. data logarithmically sampled','identified model','Location','southeast')
 
-figure
-semilogx(time, abs(strain_data-G1StressDriven_SingleOrderModel(par_norm_lsqnonlin,...
-    stress_data,time, strain_data(1))))
-title('error')
-xlabel('time $t$')
+% figure
+% semilogx(time, abs(strain_data-G1StressDriven_SingleOrderModelNonlin_growingStepSize(...
+%     par_lsqnonlin,stress_fcn,[time(1),time(end)],strain_data(1))))
+% title('error')
+% xlabel('time $t$')
 
 function str = array2strCommas(array)
     str = sprintf('%.2f, ', array);
