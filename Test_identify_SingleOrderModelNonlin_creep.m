@@ -56,7 +56,7 @@ par_0 = .9*par;
 tic
 [par_lsqnonlin,res] = identify_SingleOrderModelNonlin_creep(t_vec, stress(t_vec),...
     strain_data, par_0);
-toc
+time_elapsed = toc;
 
 % verify solution:
 disp(['True parameters:'])
@@ -74,7 +74,7 @@ figure
 plot(t_vec,strain_data,'o',t_vecId, strainId)
 xlabel('time $t$')
 ylabel('strain $\varepsilon(t)$')
-title('G1-algorithm applied to $D^\alpha \sigma + b\sigma = cD^\alpha \varepsilon + d\varepsilon$')
+title(['dry run identification results of nlSOM, time elapsed: ', num2str(time_elapsed)])
 legend('data','identified model')
 
 

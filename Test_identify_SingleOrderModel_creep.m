@@ -20,6 +20,9 @@ stress_data = ones(size(time)); % ramp up to 1 at 0.5 seconds and stay constant
 
 strain_0 = 0;
 
+% stress_fcn = @(t) interp1(time,stress_data, t);
+% [t_vec_data, strain_data] = G1StressDriven_SingleOrderModel_growingStepSize(par2par_norm(par),stress_fcn,[time(1),time(end)],strain_0);
+
 strain_data = G1StressDriven_SingleOrderModel(par2par_norm(par),stress_data,time,strain_0);
 
 % % add noise
@@ -40,7 +43,7 @@ strain_data = G1StressDriven_SingleOrderModel(par2par_norm(par),stress_data,time
 % par_0 = [0.0084621   0.0015443      2.2051   0.0033959]';
 % par_0 = par*100;
 % 
-par_0 = .1*par;
+par_0 = par;
 
 
 par_norm0 = par2par_norm(par_0); % normalized parameters
@@ -49,8 +52,10 @@ par_norm0 = par2par_norm(par_0); % normalized parameters
 % par_norm0 = [1,10^3,10^3,10^3]';
 % par_norm0 = [1,1,1,1]';
 
+tic
 [par_norm_lsqnonlin,res] = identify_SingleOrderModel_creep(time, stress_data,...
     strain_data, par_norm0);
+time_elapsed = toc;
 
 % verify solution:
 disp(['True (normalized) parameters:'])
@@ -67,7 +72,7 @@ plot(time,strain_data,'o',time,G1StressDriven_SingleOrderModel(par_norm_lsqnonli
     stress_data,time, strain_data(1)))
 xlabel('time $t$')
 ylabel('strain $\varepsilon(t)$')
-title('G1-algorithm applied to $D^\alpha \sigma + b\sigma = cD^\alpha \varepsilon + d\varepsilon$')
+title(['dry run identification results of SOM, time elapsed: ', num2str(time_elapsed)])
 legend('data','identified model')
 
 
