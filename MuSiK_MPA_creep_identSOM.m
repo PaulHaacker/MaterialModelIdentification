@@ -49,11 +49,11 @@ strain_data = strain_data*100;
 
 % initial guess
 % par_0 = [.16 2222 1000 1000];
+par_0 = [.1 .04 33 386];
 % par_0 = [.3 1000 1000 1000];
 % par_0 = [1 1 1 1];
-par_0 = [0.06 343 3000 7759];
+% par_0 = [0.06 343 3000 7759];
 % par_0 = [.3 1000 1000 1000];
-% par_0 = par*1.1;
 par_norm0 = par2par_norm(par_0); % normalized parameters
 
 [par_norm_lsqnonlin,res] = identify_SingleOrderModel_creep(...
@@ -75,7 +75,7 @@ semilogx(dataStruct.time, dataStruct.strain*100,'.-',time, strain_data,'.-',t_lo
 xlabel('time $t$')
 ylabel('strain $\varepsilon(t)$')
 title({'Identification of $D^\alpha \sigma + b\sigma = cD^\alpha \varepsilon + d\varepsilon$'; ...
-        sprintf('Identified parameters: $(\\alpha,b,c,d) = (%s)$', array2strCommas(par_norm_lsqnonlin))})
+        sprintf('Identified parameters: $(\\alpha,E_0,E_1,p_1) = (%s)$', array2strCommas(par_norm2par(par_norm_lsqnonlin)))})
 legend('all exp. data','sampled exp. data','exp. data logarithmically sampled','identified model','Location','southeast')
 
 figure

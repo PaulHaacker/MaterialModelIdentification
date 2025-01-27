@@ -12,6 +12,10 @@ function [t_vec,strain_vec] = G1StressDriven_SingleOrderModelNonlin_growingStepS
 % stress ...        function of stress signal, takes inputs from t_0 to t_1
 % strain_0 ...      initial condition of strain (scalar)
 
+% outputs:
+% t_vec ... 	    (1-by-N)-array of time instances, where the number N is hard-coded within the function
+% strain_vec ...    (1-by-N)-array of simulated strain values at corresponding time instances
+
 % extract parameters
 alpha = par(1);
 E0 = par(2);

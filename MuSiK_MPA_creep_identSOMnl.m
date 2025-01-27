@@ -54,8 +54,9 @@ strain_data = strain_data*100;
 % par_0 = [1 1 1 1];
 
 % par_0 = [0.06 343 3000 7759 0]; % result of SOM id fixed time step
-par_0 = [0.09336107    0.03936591      33.08783      386.1137   0]; % result of SOM id growing time step
-
+% par_0 = [0.09336107    0.03936591      33.08783      386.1137   0]; % result of SOM id growing time step
+% par_0 = [0.08803826      9.478454      24.87442      147.5583       0];
+par_0 = [1 1 1 1 1];
 % par_0 = [.3 1000 1000 1000];
 
 tic
@@ -87,6 +88,16 @@ title({'Identification of SOM nl'; ...
         sprintf('Identified parameters: $(\\alpha,E_0,E_1,p_1,G) = (%s)$', array2strCommas(par_lsqnonlin)); ...
         sprintf('time: %s', num2str(time_elapsed))})
 legend('all exp. data','sampled exp. data','exp. data logarithmically sampled','identified model','Location','southeast')
+
+[tModel_initial,strainModel_initial] = G1StressDriven_SingleOrderModelNonlin_growingStepSize(...
+    par_0,stress_fcn,[time(1),time(end)],strain_data(1));
+figure
+loglog(tModel,abs(strainModel-interp1(time,strain_data,tModel,"linear","extrap"))./abs(strainModel))
+hold on
+loglog(tModel_initial,abs(strainModel_initial-interp1(time,strain_data,tModel,"linear","extrap"))./abs(strainModel_initial))
+ylabel('relative error')
+xlabel('time')
+legend('linear model','nonlinear model')
 
 % figure
 % semilogx(time, abs(strain_data-G1StressDriven_SingleOrderModelNonlin_growingStepSize(...
