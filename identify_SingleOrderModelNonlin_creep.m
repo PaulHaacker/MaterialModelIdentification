@@ -67,6 +67,6 @@ function diff_GrowDist = GrowingTimeStepDiff(p,strain_data,stress_data,time)
     stress_fcn = @(t) interp1(time,stress_data, t,'linear','extrap');
     % compute gruenwald time stepping
     [t_vec_sim, strain_vec_sim] = G1StressDriven_SingleOrderModelNonlin_growingStepSize(p,stress_fcn,[time(1),time(end)],strain_data(1));
-    diff_GrowDist = sqrt(abs(strain_vec_sim - interp1(time, strain_data,t_vec_sim,'linear','extrap'))./abs(strain_vec_sim)); % relative error
-    % diff_GrowDist = (strain_vec_sim - interp1(time, strain_data,t_vec_sim,'linear','extrap')); % absolute error
+    % diff_GrowDist = sqrt(abs(strain_vec_sim - interp1(time, strain_data,t_vec_sim,'linear','extrap'))./abs(strain_vec_sim)); % relative error
+    diff_GrowDist = (strain_vec_sim - interp1(time, strain_data,t_vec_sim,'linear','extrap')); % absolute error
 end

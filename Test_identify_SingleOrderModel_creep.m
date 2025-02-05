@@ -16,7 +16,8 @@ par =   [alpha;
 time = 0:.01:10; % time array
 % stress_data = sin(time.^2); % 
 % stress_data = min(time / 0.5, 1); % ramp up to 1 at 0.5 seconds and stay constant
-stress_data = ones(size(time)); % ramp up to 1 at 0.5 seconds and stay constant
+stress_fcn = @(t) ones(size(t));
+stress_data = stress_fcn(time); % step input
 
 strain_0 = 0;
 
@@ -43,7 +44,7 @@ strain_data = G1StressDriven_SingleOrderModel(par2par_norm(par),stress_data,time
 % par_0 = [0.0084621   0.0015443      2.2051   0.0033959]';
 % par_0 = par*100;
 % 
-par_0 = par;
+par_0 = 0.9*par;
 
 
 par_norm0 = par2par_norm(par_0); % normalized parameters

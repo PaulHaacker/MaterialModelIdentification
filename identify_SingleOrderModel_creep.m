@@ -28,16 +28,16 @@ options = optimoptions("lsqnonlin","Algorithm","interior-point",'Display','off',
     'StepTolerance',0,'ConstraintTolerance',0);
 
 % Call lsqnonlin to optimize parameters
-[par_norm_lsqnonlin,res] = lsqnonlin(@(p) GrowingTimeStepDiff(p,strain_data,stress_data,time), ...
-    initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel(p), options);
+% [par_norm_lsqnonlin,res] = lsqnonlin(@(p) GrowingTimeStepDiff(p,strain_data,stress_data,time), ...
+%     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel(p), options);
 % [par_norm_lsqnonlin,res] = lsqnonlin(@(p) LogTimeStepDiff(p,strain_data,stress_data,time), ...
 %     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel(p), options);
 % [par_norm_lsqnonlin,res] = lsqnonlin(@(p) LogTimeStepDiff(p,strain_data,stress_data,time), ...
 %     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel_alpha1(p), options);
 % [par_norm_lsqnonlin,res] = lsqnonlin(@(p) EquidistTimeStepDiff(p,strain_data,stress_data,time), ...
 %     initial_guess, lb, ub, [], [], [], [], @(p) nonlincon_SingleOrderModel(p), options);
-% [par_norm_lsqnonlin,res] = lsqnonlin(@(p) EquidistTimeStepDiff(p,strain_data,stress_data,time), ...
-%     initial_guess, lb, ub);
+[par_norm_lsqnonlin,res] = lsqnonlin(@(p) EquidistTimeStepDiff(p,strain_data,stress_data,time), ...
+    initial_guess, lb, ub);
 end
 
 
@@ -61,6 +61,6 @@ function diff_GrowDist = GrowingTimeStepDiff(p,strain_data,stress_data,time)
     stress_fcn = @(t) interp1(time,stress_data, t);
     % compute gruenwald time stepping
     [t_vec_sim, strain_vec_sim] = G1StressDriven_SingleOrderModel_growingStepSize(p,stress_fcn,[time(1),time(end)],strain_data(1));
-    diff_GrowDist = sqrt(abs(strain_vec_sim - interp1(time, strain_data,t_vec_sim))./abs(strain_vec_sim)); % relative error
-    % diff_GrowDist = (strain_vec_sim - interp1(time, strain_data,t_vec_sim)); % absolute error
+    % diff_GrowDist = sqrt(abs(strain_vec_sim - interp1(time, strain_data,t_vec_sim))./abs(strain_vec_sim)); % relative error
+    diff_GrowDist = (strain_vec_sim - interp1(time, strain_data,t_vec_sim)); % absolute error
 end

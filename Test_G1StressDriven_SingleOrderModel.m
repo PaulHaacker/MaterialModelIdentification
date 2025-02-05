@@ -10,7 +10,8 @@ par =   [alpha;
         E_1;
         p_1]; % parameters
 
-time = 0:.001:1; % time array
+time = linspace(0,1,10^4); % time array
+% time = 0:.001:1; % time array
 % stress = min(time / 0.01, 1); % ramp up to 1 at 0.5 seconds and stay constant
 stress = ones(size(time)); 
 strain_0 = 0;
@@ -26,7 +27,7 @@ figure
 % xlabel('time $t$')
 % ylabel('stress $\sigma(t)$')
 % nexttile
-plot(time,strain,'LineWidth',1.5)
+plot(time,strain,'.-','LineWidth',1.5)
 xlabel('time $t$')
 ylabel('strain $\varepsilon(t)$')
 title('G1-algorithm applied to $D^\alpha \sigma + b\sigma = cD^\alpha \varepsilon + d\varepsilon$')
