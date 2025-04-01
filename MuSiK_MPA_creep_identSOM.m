@@ -6,14 +6,15 @@ load('creep_processed.mat')
 
 % sample the data
 
-dataStruct = creepPK4_processed;
+dataStruct = creepPK2_processed;
 
 % number_sample = 1000;
 number_sample = length(dataStruct.stress);
 
-% end_indx = length(dataStruct.time);
-end_indx = floor(.8*length(dataStruct.time)); % cut off last bit of data which is relaxation
+end_indx = length(dataStruct.time);
+% end_indx = floor(.8*length(dataStruct.time)); % cut off last bit of data which is relaxation
 
+% % Raw data is not sampled equidistantly! - sample equidistantly
 % time = linspace(dataStruct.time(1),dataStruct.time(end),number_sample);
 time = linspace(dataStruct.time(1),dataStruct.time(end_indx),number_sample);
 time = time; % modify for logarithmic time scale
@@ -22,18 +23,18 @@ strain_data = interp1(dataStruct.time,dataStruct.strain,time);
 
 % verification plot
 % Create a new figure
-% figure
-% tiledlayout('flow')
-% nexttile
-% semilogx(creepPK2_processed.time, creepPK2_processed.strain, time, strain_data, 'o')
-% title('Strain vs Time')
-% xlabel('Time')
-% ylabel('Strain')
-% nexttile
-% semilogx(creepPK2_processed.time, creepPK2_processed.stress, time, stress_data, 'o')
-% title('Stress vs Time')
-% xlabel('Time')
-% ylabel('Stress')
+figure
+tiledlayout('flow')
+nexttile
+semilogx(creepPK2_processed.time, creepPK2_processed.strain, time, strain_data, 'o')
+title('Strain vs Time')
+xlabel('Time')
+ylabel('Strain')
+nexttile
+semilogx(creepPK2_processed.time, creepPK2_processed.stress, time, stress_data, 'o')
+title('Stress vs Time')
+xlabel('Time')
+ylabel('Stress')
 
 % convert to MPa and percent for normalization
 stress_data = stress_data/10^6;
@@ -49,7 +50,8 @@ strain_data = strain_data*100;
 
 % initial guess
 % par_0 = [.16 2222 1000 1000];
-par_0 = [.1 .04 33 386];
+% par_0 = [.1 .04 33 386];
+par_0 = [0.03, 15.25, 188.03, 15.59];
 % par_0 = [.3 1000 1000 1000];
 % par_0 = [1 1 1 1];
 % par_0 = [0.06 343 3000 7759];

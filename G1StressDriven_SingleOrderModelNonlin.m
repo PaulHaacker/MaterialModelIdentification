@@ -110,7 +110,7 @@ for kk = 1:N_d
         df = @(x)(E0+E1+dt^alpha*E0*E1/p1)+ 3*G*(1+dt^alpha*E1/p1)*x.^2;
         f = @(x)der_term_strain - dt^alpha*(der_stress + E1/p1*stress_inner(length_hist_curr))...
             + (E0+E1+dt^alpha*E0*E1/p1)*x+ G*(1+dt^alpha*E1/p1)*x.^3;
-        strain_inner(length_hist_curr) = newtonRaphson(f, df, strain_inner(length_hist_curr-1), 10^-6, 10);
+        strain_inner(length_hist_curr) = newtonRaphson(f, df, strain_inner(length_hist_curr-1), 10^-6, 30);
 
         % p = [G*(1+dt^alpha*E1/p1),0,(E0+E1+dt^alpha*E0*E1/p1)...
         %     ,der_term_strain - dt^alpha*(der_stress + E1/p1*stress_inner(length_hist_curr))];
