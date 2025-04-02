@@ -3,7 +3,7 @@ clear;
 close all;
 
 % Define test parameters
-alpha = .4;
+alpha = .6;
 E_0 = 3;
 E_1 = 1;
 p_1 = 1;
@@ -38,24 +38,28 @@ ComplexModulus = ComplexMod_SingleOrderModel(par2par_norm(par_lin),omega);
 
 % Plot the results
 figure;
+
 subplot(2,1,1);
-semilogx(omega, a, 'bo-', 'LineWidth', 1.5);
+semilogx(omega, abs(a),'o-');
 hold on
-plot(omega,real(ComplexModulus),'o-');
-xlabel('Frequency $\omega$ (rad/s)');
-ylabel('Storage Modulus $a(\omega)$');
-legend('harmonic balance','transfer function')
-title('Storage Modulus');
+plot(omega,abs(real(ComplexModulus)),'o-');
+xlabel('Frequency $\omega$ (rad/s)', 'FontSize', 14);
+ylabel('Storage Modulus', 'FontSize', 14);
+legend('harmonic balance $|a(\omega)|$', 'Fourier transform $\mathrm{Re}\bar E$', 'FontSize', 14);
 grid on;
+set(gca, 'FontSize', 14);
 
 subplot(2,1,2);
-semilogx(omega, b, 'ro-', 'LineWidth', 1.5);
+semilogx(omega, abs(b), 'o-');
 hold on
-plot(omega,imag(ComplexModulus),'o-');
-xlabel('Frequency $\omega$ (rad/s)');
-ylabel('Loss Modulus $b(\omega)$');
-legend('harmonic balance','transfer function')
-title('Loss Modulus');
+plot(omega,abs(imag(ComplexModulus)),'o-');
+xlabel('Frequency $\omega$ (rad/s)', 'FontSize', 14);
+ylabel('Loss Modulus', 'FontSize', 14);
+legend('harmonic balance $|b(\omega)|$', 'Fourier transform $\mathrm{Im}\bar E$', 'FontSize', 14);
 grid on;
+
+% Set font size for all axes
+set(gca, 'FontSize', 14);
+
 
 % disp('Test completed successfully.');

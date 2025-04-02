@@ -23,7 +23,7 @@ function [a,b] = HB_nlSOM(par,omega)
     a = zeros(size(omega));
     b = zeros(size(omega));
     for kk = 1:N
-        A_mat = [E1/p1+omega(kk)^alpha*cos(alpha*pi/2), omega(kk)^alpha*sin(alpha*pi/2)
+        A_mat = [E1/p1+omega(kk)^alpha*cos(alpha*pi/2), -omega(kk)^alpha*sin(alpha*pi/2)
                 omega(kk)^alpha*sin(alpha*pi/2),E1/p1+omega(kk)^alpha*cos(alpha*pi/2)];
         b_mat = [(E0+E1+3/4*G)*omega(kk)^alpha*cos(alpha*pi/2)+E0*E1/p1+3/4*G;
                 (E0+E1+3/4*G)*omega(kk)^alpha*sin(alpha*pi/2)];
