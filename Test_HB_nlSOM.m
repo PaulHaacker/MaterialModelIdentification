@@ -5,8 +5,8 @@ close all;
 % Define test parameters
 alpha = .6;
 E_0 = 3;
-E_1 = 1;
-p_1 = 1;
+E_1 = 2;
+p_1 = 3;
 par_NL =   [alpha;
         E_0;
         E_1;
