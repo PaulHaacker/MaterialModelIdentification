@@ -1,5 +1,5 @@
 function [time,stress_vec] = G1StrainDriven_SingleOrderModelNonlin(par,strain,time,stress_0)
-% Single Order Material Model of a Viscoelastic Material, time-domain
+% Single Order nonlinear Material Model (nl-SOM) of a Viscoelastic Material, time-domain
 % response using G1-algorithm
 % inputs:
 % par_     ...      (5-by-1)-array of parameters, where 
@@ -27,7 +27,7 @@ G = par(5);
 N_total = length(time); % number of steps performed with constant dt
 
 h = diff(time);
-tolerance = 1e-10; % Define a small tolerance value
+tolerance = 1e-6; % Define a small tolerance value
 is_equidistant = all(abs(h - h(1)) < tolerance);
 if ~is_equidistant
     error('invalid time array')
