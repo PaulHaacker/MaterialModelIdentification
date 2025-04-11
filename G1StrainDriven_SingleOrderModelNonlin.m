@@ -54,7 +54,7 @@ for kk = 2:N_total
     % compute fractional derivative terms
     der_terms = sum(A_Grunwald(2:kk).*fliplr((E0+E1)*strain_vec(2:kk)+G*strain_vec(2:kk).^3-stress_vec(2:kk)));
     % time step: find next value of strain
-    stress_vec(kk) = (der_terms+help_b*strain_vec(kk)+help_c*strain_vec(kk)^3)/help_c;
+    stress_vec(kk) = (der_terms+help_b*strain_vec(kk)+G*help_c*strain_vec(kk)^3)/help_c;
 end
 
 end

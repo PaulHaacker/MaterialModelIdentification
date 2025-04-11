@@ -3,7 +3,7 @@ clear;
 close all;
 
 % Define test parameters
-alpha = .6;
+alpha = .5;
 E_0 = 3;
 E_1 = 2;
 p_1 = 3;
@@ -17,7 +17,7 @@ par_lin =   [alpha;
         E_1;
         p_1]; % parameters
 
-omega = logspace(-5,2,10); % frequency range
+omega = logspace(-5,2,1); % frequency range
 
 % Call the function
 ComplexModulusNL = ComplexModSimulation_SingleOrderModelNonlin(par_NL, omega);
@@ -50,7 +50,7 @@ grid on;
 set(gca, 'FontSize', 14);
 
 subplot(2,1,2);
-semilogx(omega, abs(imag(ComplexModulus)), 'o-');
+semilogx(omega, abs(imag(ComplexModulusNL)), 'o-');
 hold on
 plot(omega,abs(imag(ComplexModulus)),'o-');
 xlabel('Frequency $\omega$ (rad/s)', 'FontSize', 14);

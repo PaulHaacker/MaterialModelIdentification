@@ -1,8 +1,8 @@
 % Test script for G1StrainDriven_SingleOrderModelNonlin
 % Define parameters
 par = [0.3, 1, 2, 3, 1];  % Example parameters: [alpha, E0, E1, p1, G]
-time = linspace(0, 100, 10000);  % Time vector from 0 to 10s with 100 points
-strain = @(t)  sin(2 * pi * 0.5 * t);  % Example sinusoidal strain function
+time = linspace(0, 100, 1000);  % Time vector from 0 to 10s with 100 points
+strain = @(t)  ones(size(t));  % Example sinusoidal strain function
 stress_0 = 0;  % Initial stress condition
 % Call the function
 [time_out, stress_vec] = G1StrainDriven_SingleOrderModelNonlin(par, strain, time, stress_0);

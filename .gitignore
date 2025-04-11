@@ -9,3 +9,5 @@
 *.tex
 *.eps
 plots/
+debug_SimulationBasedModulus.m
+debug_SimulationBasedModulusLinear.m
