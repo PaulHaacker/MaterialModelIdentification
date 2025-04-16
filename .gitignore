@@ -11,3 +11,5 @@
 plots/
 debug_SimulationBasedModulus.m
 debug_SimulationBasedModulusLinear.m
+documentation_HysteresisStressStrainPlots_nlSOM.m
+documentation_ArtificialNonlinearModel.m
